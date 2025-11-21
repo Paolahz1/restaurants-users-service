@@ -4,5 +4,5 @@ import com.foodcourt.users_service.domain.model.Owner;
 
 public interface IOwnerServicePort
 {
-    boolean createOwner(Owner owner);
+    void createOwner(Owner owner);
 }

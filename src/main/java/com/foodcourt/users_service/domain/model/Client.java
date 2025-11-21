@@ -6,6 +6,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Client extends Person{
 
-    private final Role role = Role.CLIENT;
+    private  Role role = Role.CLIENT;
 
 }

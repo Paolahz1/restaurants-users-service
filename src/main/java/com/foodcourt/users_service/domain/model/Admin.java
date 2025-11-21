@@ -6,6 +6,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Admin extends Person{
 
-    private final Role role = Role.ADMIN;
+    private Role role = Role.ADMIN;
 
 }

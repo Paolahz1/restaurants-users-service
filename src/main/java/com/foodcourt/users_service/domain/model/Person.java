@@ -1,12 +1,10 @@
 package com.foodcourt.users_service.domain.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-@AllArgsConstructor
 
 public abstract class Person {
 

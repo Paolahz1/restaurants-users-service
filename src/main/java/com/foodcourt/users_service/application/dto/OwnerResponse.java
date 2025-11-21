@@ -7,8 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class OwnerResponse {
-
-    String response;
+    String message;
     boolean success;
 }
 
