@@ -7,10 +7,10 @@ import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
 import com.foodcourt.users_service.domain.port.spi.IOwnerPersistencePort;
 
 import java.time.LocalDate;
-
-
+import java.util.logging.Logger;
 public class CreateOwnerUseCase implements IOwnerServicePort {
 
+    Logger logger = Logger.getLogger(getClass().getName());
     private  final IOwnerPersistencePort userPersistencePort;
     private  final IPasswordEncoderPort passwordEncoderPort;
 
@@ -23,6 +23,7 @@ public class CreateOwnerUseCase implements IOwnerServicePort {
     public void createOwner(Owner owner) {
 
         if(userPersistencePort.existsByEmail(owner.getEmail())){
+           logger.info(owner.getEmail());
             throw new EmailAlreadyExistsException(owner.getEmail());
         }
 

@@ -5,8 +5,6 @@ import java.util.Optional;
 public interface IOwnerPersistencePort {
 
     void saveOwner(Owner owner);
-    Optional<Owner> findByEmail(String email);
-    Optional<Owner> findById(Long id);
+    Optional<Owner> getByEmail(String email);
     boolean existsByEmail(String email);
-    boolean existsByIdentityDocument(String document);
 }

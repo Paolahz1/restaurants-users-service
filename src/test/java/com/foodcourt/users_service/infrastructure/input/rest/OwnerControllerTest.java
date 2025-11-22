@@ -1,11 +1,13 @@
 package com.foodcourt.users_service.infrastructure.input.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.foodcourt.users_service.application.dto.CreateOwnerCommand;
 import com.foodcourt.users_service.application.dto.OwnerResponse;
 import com.foodcourt.users_service.application.handler.IOwnerHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -18,8 +20,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(OwnerControllerTest.class) // <- Solo carga el controller
-class OwnerControllerTest {
+@WebMvcTest(controllers = OwnerController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)class OwnerControllerTest {
 
     @Autowired
     private MockMvc mockMvc; // <- MockMvc se inyecta automáticamente
@@ -27,14 +28,16 @@ class OwnerControllerTest {
     @MockitoBean
     private IOwnerHandler ownerHandler; // <- lo mockeas para que no llame al UseCase real
 
+    // Método helper para convertir objetos a JSON, con soporte para LocalDate
     private static String asJsonString(final Object obj) {
         try {
-            return new ObjectMapper().writeValueAsString(obj);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule()); // <--- registro del módulo para fechas
+            return mapper.writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
     @Test
     void shouldReturn201WhenOwnerCreated() throws Exception {
         CreateOwnerCommand command = CreateOwnerCommand.builder()

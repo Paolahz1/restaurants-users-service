@@ -1,5 +1,4 @@
 package com.foodcourt.users_service.infrastructure.input.rest;
-
 import com.foodcourt.users_service.application.dto.CreateOwnerCommand;
 import com.foodcourt.users_service.application.dto.OwnerResponse;
 import com.foodcourt.users_service.application.handler.IOwnerHandler;
@@ -30,6 +29,9 @@ public class OwnerController {
                     .body(response);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.
+                status(HttpStatus.CREATED)
+                .body(response);
+
     }
 }

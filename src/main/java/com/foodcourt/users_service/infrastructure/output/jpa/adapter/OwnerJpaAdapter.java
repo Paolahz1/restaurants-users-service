@@ -23,24 +23,16 @@ public class OwnerJpaAdapter implements IOwnerPersistencePort {
     }
 
     @Override
-    public Optional<Owner> findByEmail(String email) {
-        return ownerRepository.findByEmail(email)                  // <-- llama al JPA repository
-                .filter(e -> e.getRole() == Role.OWNER)  // <-- aplica filtro
-                .map(entityMapper::toDomain);                      // <-- mapea a dominio
-    }
-
-    @Override
-    public Optional<Owner> findById(Long id) {
-        return Optional.empty();
+    public Optional<Owner> getByEmail(String email) {
+        return ownerRepository.findByEmail(email)
+                .filter(e -> e.getRole() == Role.OWNER)
+                .map(entityMapper::toDomain);
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        return ownerRepository.findByEmail(email).isPresent();
     }
 
-    @Override
-    public boolean existsByIdentityDocument(String document) {
-        return false;
-    }
+
 }
