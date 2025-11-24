@@ -28,11 +28,6 @@ public class OwnerBeanconfiguration {
     }
 
     @Bean
-    public PasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public IPasswordEncoderPort passwordEncoderPort(PasswordEncoder encoder){
         return new PasswordBcryptAdapter(encoder);
     }

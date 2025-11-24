@@ -1,22 +1,22 @@
 package com.foodcourt.users_service.infrastructure.input.rest;
 
-import com.foodcourt.users_service.application.dto.GetRoleResponse;
+import com.foodcourt.users_service.application.dto.*;
 import com.foodcourt.users_service.application.handler.IAuthHandler;
 
+import com.foodcourt.users_service.application.handler.IOwnerHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users-service/users/")
+@RequestMapping("/users-service/users/auth/")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final IAuthHandler authHandler;
+    private  final IOwnerHandler ownerHandler;
+
 
     @GetMapping("{id}/role")
     public ResponseEntity<GetRoleResponse> getRoleById(@PathVariable Long id){
@@ -32,7 +32,13 @@ public class AuthController {
 
     }
 
-}
+    @PostMapping("login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginCommand request){
+        return ResponseEntity.ok(authHandler.login(request));
+    }
 
+
+
+}
 
 
