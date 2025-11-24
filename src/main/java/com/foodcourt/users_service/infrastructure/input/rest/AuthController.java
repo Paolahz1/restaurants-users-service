@@ -5,6 +5,7 @@ import com.foodcourt.users_service.application.handler.IAuthHandler;
 
 import com.foodcourt.users_service.application.handler.IOwnerHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.batch.BatchTransactionManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,20 @@ public class AuthController {
     @PostMapping("login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginCommand request){
         return ResponseEntity.ok(authHandler.login(request));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<GetUserResponse> getUserById(@PathVariable Long id){
+        GetUserResponse response = authHandler.getUser(id);
+
+        if (response == null || response.getRole() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.
+                status(HttpStatus.OK)
+                .body(response);
+
     }
 
 

@@ -3,7 +3,9 @@ package com.foodcourt.users_service.application.handler;
 import com.foodcourt.users_service.application.dto.*;
 import com.foodcourt.users_service.application.mapper.CreateOwnerCommandMapper;
 import com.foodcourt.users_service.application.mapper.GetRoleResponseMapper;
+import com.foodcourt.users_service.application.mapper.GetUserResponseMapper;
 import com.foodcourt.users_service.domain.model.Owner;
+import com.foodcourt.users_service.domain.model.Person;
 import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.port.api.IAuthServicePort;
 import com.foodcourt.users_service.domain.port.api.IOwnerServicePort;
@@ -29,6 +31,7 @@ public class AuthHandler implements IAuthHandler {
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final GetUserResponseMapper getUserResponseMapper;
 
 
     @Override
@@ -55,6 +58,15 @@ public class AuthHandler implements IAuthHandler {
         return new AuthResponse(jwt);
 
     }
+
+    @Override
+    public GetUserResponse getUser(Long userId) {
+        Owner person = authServicePort.getUserById(userId);
+        Role role = authServicePort.getUserRoleById(userId);
+
+        return getUserResponseMapper.toResponse(person, role);
+    }
+
 }
 
 

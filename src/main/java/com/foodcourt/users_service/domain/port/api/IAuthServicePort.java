@@ -1,5 +1,7 @@
 package com.foodcourt.users_service.domain.port.api;
 
+import com.foodcourt.users_service.domain.model.Owner;
+import com.foodcourt.users_service.domain.model.Person;
 import com.foodcourt.users_service.domain.model.Role;
 
 public interface IAuthServicePort {
@@ -10,4 +12,5 @@ public interface IAuthServicePort {
      */
     String login(String email, String rawPassword);
     Role getUserRoleById(Long userId);
+    Owner getUserById(Long userId);
 }
