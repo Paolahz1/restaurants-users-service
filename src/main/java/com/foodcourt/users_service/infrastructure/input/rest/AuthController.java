@@ -1,11 +1,14 @@
 package com.foodcourt.users_service.infrastructure.input.rest;
 
-import com.foodcourt.users_service.application.dto.*;
+import com.foodcourt.users_service.application.dto.get.GetRoleResponse;
+import com.foodcourt.users_service.application.dto.get.GetUserByEmailResponse;
+import com.foodcourt.users_service.application.dto.get.GetUserByIdResponse;
+import com.foodcourt.users_service.application.dto.login.AuthResponse;
+import com.foodcourt.users_service.application.dto.login.LoginCommand;
 import com.foodcourt.users_service.application.handler.IAuthHandler;
 
 import com.foodcourt.users_service.application.handler.IOwnerHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.batch.BatchTransactionManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +42,8 @@ public class AuthController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<GetUserResponse> getUserById(@PathVariable Long id){
-        GetUserResponse response = authHandler.getUser(id);
+    public ResponseEntity<GetUserByIdResponse> getUserById(@PathVariable Long id){
+        GetUserByIdResponse response = authHandler.getUserById(id);
 
         if (response == null || response.getRole() == null) {
             return ResponseEntity.notFound().build();
@@ -52,7 +55,19 @@ public class AuthController {
 
     }
 
+    @GetMapping("{email}")
+    public ResponseEntity<GetUserByEmailResponse> getUserById(@PathVariable String email){
+        GetUserByEmailResponse response = authHandler.getUserByEmail(email);
 
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.
+                status(HttpStatus.OK)
+                .body(response);
+
+    }
 
 }
 

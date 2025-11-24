@@ -1,19 +1,18 @@
-package com.foodcourt.users_service.domain.model;
+package com.foodcourt.users_service.application.dto.create;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
 
 @Data
-@SuperBuilder
-
-public abstract class Person {
-
-    private Long id;
+@Builder
+public class CreateOwnerCommand {
     private String firstName;
     private String lastName;
     private String identityDocument;
     private String phoneNumber;
     private String email;
     private String password;
-
+    private LocalDate birthDate;
 }

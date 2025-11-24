@@ -1,4 +1,4 @@
-package com.foodcourt.users_service.application.dto;
+package com.foodcourt.users_service.application.dto.get;
 
 import lombok.Builder;
 import lombok.Data;

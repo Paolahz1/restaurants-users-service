@@ -2,8 +2,8 @@ package com.foodcourt.users_service.infrastructure.input.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.foodcourt.users_service.application.dto.CreateOwnerCommand;
-import com.foodcourt.users_service.application.dto.OwnerResponse;
+import com.foodcourt.users_service.application.dto.create.CreateOwnerCommand;
+import com.foodcourt.users_service.application.dto.create.CreateOwnerResponse;
 import com.foodcourt.users_service.application.handler.IOwnerHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .birthDate(LocalDate.of(1990, 5, 10))
                 .build();
 
-        OwnerResponse response = OwnerResponse.builder()
+        CreateOwnerResponse response = CreateOwnerResponse.builder()
                 .success(true)
                 .message(null)
                 .build();
