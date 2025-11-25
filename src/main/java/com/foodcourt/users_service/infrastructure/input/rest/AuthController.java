@@ -22,7 +22,14 @@ public class AuthController {
     private  final IOwnerHandler ownerHandler;
 
 
-    @GetMapping("{id}/role")
+
+
+    @PostMapping("login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginCommand request){
+        return ResponseEntity.ok(authHandler.login(request));
+    }
+
+    @GetMapping("role/{id}")
     public ResponseEntity<GetRoleResponse> getRoleById(@PathVariable Long id){
         GetRoleResponse response = authHandler.getRoleById(id);
 
@@ -36,12 +43,7 @@ public class AuthController {
 
     }
 
-    @PostMapping("login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginCommand request){
-        return ResponseEntity.ok(authHandler.login(request));
-    }
-
-    @GetMapping("{id}")
+    @GetMapping("/byId/{id}")
     public ResponseEntity<GetUserByIdResponse> getUserById(@PathVariable Long id){
         GetUserByIdResponse response = authHandler.getUserById(id);
 
@@ -55,19 +57,21 @@ public class AuthController {
 
     }
 
-    @GetMapping("{email}")
-    public ResponseEntity<GetUserByEmailResponse> getUserById(@PathVariable String email){
+    @GetMapping("email/{email}")
+    public ResponseEntity<GetUserByEmailResponse> getUserByEmail(@PathVariable String email){
+
         GetUserByEmailResponse response = authHandler.getUserByEmail(email);
 
         if (response == null) {
+
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.
-                status(HttpStatus.OK)
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(response);
-
     }
+
 
 }
 
