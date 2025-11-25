@@ -1,6 +1,6 @@
 package com.foodcourt.users_service.infrastructure.configuration;
 
-import com.foodcourt.users_service.domain.port.api.IOwnerServicePort;
+import com.foodcourt.users_service.domain.port.api.ICreateOwnerServicePort;
 import com.foodcourt.users_service.domain.port.spi.IOwnerPersistencePort;
 import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
 import com.foodcourt.users_service.domain.usecase.CreateOwnerUseCase;
@@ -11,7 +11,6 @@ import com.foodcourt.users_service.infrastructure.output.jpa.repository.IUserJpa
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -33,7 +32,7 @@ public class OwnerBeanconfiguration {
     }
 
     @Bean
-    public IOwnerServicePort ownerServicePort( IOwnerPersistencePort persistencePort, IPasswordEncoderPort passwordEncoderPort){
+    public ICreateOwnerServicePort ownerServicePort(IOwnerPersistencePort persistencePort, IPasswordEncoderPort passwordEncoderPort){
        return new CreateOwnerUseCase(persistencePort, passwordEncoderPort);
     }
 }

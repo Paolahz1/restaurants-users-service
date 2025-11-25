@@ -3,13 +3,11 @@ package com.foodcourt.users_service.infrastructure.input.rest;
 import com.foodcourt.users_service.application.dto.create.CreateOwnerCommand;
 import com.foodcourt.users_service.application.dto.create.CreateOwnerResponse;
 import com.foodcourt.users_service.application.handler.IOwnerHandler;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

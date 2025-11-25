@@ -2,7 +2,6 @@ package com.foodcourt.users_service.domain.port.api;
 
 import com.foodcourt.users_service.domain.model.User;
 
-public interface IEmployeeServicePort
-{
-    void createEmployee(User employee);
+public interface ICreateEmployee {
+    void saveEmployee (User employee);
 }

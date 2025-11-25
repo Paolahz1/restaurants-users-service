@@ -2,7 +2,6 @@ package com.foodcourt.users_service.domain.model;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
@@ -16,7 +15,7 @@ public class User {
     private String identityDocument;
     private String phoneNumber;
     private String email;
-    private String password; // bcrypt
+    private String password;
     private LocalDate birthDate;
     private Role role;
 }

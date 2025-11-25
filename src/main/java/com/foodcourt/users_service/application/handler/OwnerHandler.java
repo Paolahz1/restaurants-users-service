@@ -4,7 +4,7 @@ import com.foodcourt.users_service.application.dto.create.CreateOwnerCommand;
 import com.foodcourt.users_service.application.dto.create.CreateOwnerResponse;
 import com.foodcourt.users_service.application.mapper.CreateOwnerCommandMapper;
 import com.foodcourt.users_service.domain.model.Owner;
-import com.foodcourt.users_service.domain.port.api.IOwnerServicePort;
+import com.foodcourt.users_service.domain.port.api.ICreateOwnerServicePort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 public class OwnerHandler implements IOwnerHandler {
 
-    private final IOwnerServicePort ownerServicePort;
+    private final ICreateOwnerServicePort ownerServicePort;
     private final CreateOwnerCommandMapper ownerCommandMapper;
 
     @Override

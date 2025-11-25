@@ -1,10 +1,8 @@
 package com.foodcourt.users_service.infrastructure.output.jpa.adapter;
 
-import com.foodcourt.users_service.domain.model.Owner;
-import com.foodcourt.users_service.domain.model.Person;
 import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.model.User;
-import com.foodcourt.users_service.domain.port.spi.IAuthPersistencePort;
+import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
 import com.foodcourt.users_service.infrastructure.output.jpa.entity.UserEntity;
 import com.foodcourt.users_service.infrastructure.output.jpa.mapper.IOwnerEntityMapper;
 import com.foodcourt.users_service.infrastructure.output.jpa.mapper.IUserEntityMapper;
@@ -12,24 +10,24 @@ import com.foodcourt.users_service.infrastructure.output.jpa.repository.IUserJpa
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 @RequiredArgsConstructor
-public class AuthJpaAdapter implements IAuthPersistencePort {
+public class UserJpaAdapter implements IUserPersistencePort {
 
     private final IUserJpaRepository userRepository;
     private final IOwnerEntityMapper mapper;
     private final IUserEntityMapper userMapper;
+
+
     @Override
     public Role getRoleById(Long idUser) {
         return userRepository.getRoleById(idUser);
     }
 
     @Override
-    public Owner getUserById(Long idUser) {
+    public User getUserById(Long idUser) {
         return userRepository.findById(idUser)
-                .map(mapper::toDomain)
+                .map(userMapper::toDomain)
                 .orElse(null);
     }
 
@@ -38,6 +36,12 @@ public class AuthJpaAdapter implements IAuthPersistencePort {
         return userRepository.findByEmail(email)
                 .map(userMapper::toDomain)
                 .orElse(null);
+    }
+
+    @Override
+    public void saveUser(User user) {
+        UserEntity userEntity = userMapper.toEntity(user);
+        userRepository.save(userEntity);
     }
 
 

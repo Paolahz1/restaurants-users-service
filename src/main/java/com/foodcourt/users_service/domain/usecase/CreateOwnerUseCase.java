@@ -2,13 +2,13 @@ package com.foodcourt.users_service.domain.usecase;
 
 import com.foodcourt.users_service.domain.exception.*;
 import com.foodcourt.users_service.domain.model.Owner;
-import com.foodcourt.users_service.domain.port.api.IOwnerServicePort;
+import com.foodcourt.users_service.domain.port.api.ICreateOwnerServicePort;
 import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
 import com.foodcourt.users_service.domain.port.spi.IOwnerPersistencePort;
 
 import java.time.LocalDate;
 
-public class CreateOwnerUseCase implements IOwnerServicePort {
+public class CreateOwnerUseCase implements ICreateOwnerServicePort {
 
     private  final IOwnerPersistencePort userPersistencePort;
     private  final IPasswordEncoderPort passwordEncoderPort;
@@ -22,7 +22,7 @@ public class CreateOwnerUseCase implements IOwnerServicePort {
     public void createOwner(Owner owner) {
 
         if(userPersistencePort.existsByEmail(owner.getEmail())){
-            throw new EmailAlreadyExistsException(owner.getEmail());
+            throw new EmailAlreadyExistsException();
         }
 
         if (owner.getBirthDate().isAfter(LocalDate.now().minusYears(18))) {
