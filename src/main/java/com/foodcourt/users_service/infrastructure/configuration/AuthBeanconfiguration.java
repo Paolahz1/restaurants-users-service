@@ -1,7 +1,7 @@
 package com.foodcourt.users_service.infrastructure.configuration;
 
 import com.foodcourt.users_service.domain.port.api.IAuthServicePort;
-import com.foodcourt.users_service.domain.port.api.IOwnerServicePort;
+
 import com.foodcourt.users_service.domain.port.spi.IAuthPersistencePort;
 import com.foodcourt.users_service.domain.port.spi.IOwnerPersistencePort;
 import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
