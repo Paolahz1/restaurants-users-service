@@ -1,6 +1,10 @@
 package com.foodcourt.users_service.infrastructure.input.rest;
 
-import com.foodcourt.users_service.application.dto.*;
+import com.foodcourt.users_service.application.dto.get.GetRoleResponse;
+import com.foodcourt.users_service.application.dto.get.GetUserByEmailResponse;
+import com.foodcourt.users_service.application.dto.get.GetUserByIdResponse;
+import com.foodcourt.users_service.application.dto.login.AuthResponse;
+import com.foodcourt.users_service.application.dto.login.LoginCommand;
 import com.foodcourt.users_service.application.handler.IAuthHandler;
 
 import com.foodcourt.users_service.application.handler.IOwnerHandler;
@@ -37,7 +41,33 @@ public class AuthController {
         return ResponseEntity.ok(authHandler.login(request));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<GetUserByIdResponse> getUserById(@PathVariable Long id){
+        GetUserByIdResponse response = authHandler.getUserById(id);
 
+        if (response == null || response.getRole() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.
+                status(HttpStatus.OK)
+                .body(response);
+
+    }
+
+    @GetMapping("{email}")
+    public ResponseEntity<GetUserByEmailResponse> getUserById(@PathVariable String email){
+        GetUserByEmailResponse response = authHandler.getUserByEmail(email);
+
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.
+                status(HttpStatus.OK)
+                .body(response);
+
+    }
 
 }
 

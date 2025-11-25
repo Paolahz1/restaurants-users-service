@@ -1,10 +1,10 @@
 package com.foodcourt.users_service.application.handler;
 
-import com.foodcourt.users_service.application.dto.CreateOwnerCommand;
-import com.foodcourt.users_service.application.dto.OwnerResponse;
+import com.foodcourt.users_service.application.dto.create.CreateOwnerCommand;
+import com.foodcourt.users_service.application.dto.create.CreateOwnerResponse;
 
 public interface IOwnerHandler {
 
-    OwnerResponse createOwner(CreateOwnerCommand ownerCommand);
+    CreateOwnerResponse createOwner(CreateOwnerCommand ownerCommand);
 
 }

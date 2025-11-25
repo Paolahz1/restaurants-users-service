@@ -1,7 +1,7 @@
 package com.foodcourt.users_service.application.handler;
 
-import com.foodcourt.users_service.application.dto.CreateOwnerCommand;
-import com.foodcourt.users_service.application.dto.OwnerResponse;
+import com.foodcourt.users_service.application.dto.create.CreateOwnerCommand;
+import com.foodcourt.users_service.application.dto.create.CreateOwnerResponse;
 import com.foodcourt.users_service.application.mapper.CreateOwnerCommandMapper;
 import com.foodcourt.users_service.domain.model.Owner;
 import com.foodcourt.users_service.domain.port.api.IOwnerServicePort;
@@ -20,12 +20,12 @@ public class OwnerHandler implements IOwnerHandler {
     private final CreateOwnerCommandMapper ownerCommandMapper;
 
     @Override
-    public OwnerResponse createOwner(CreateOwnerCommand ownerCommand) {
+    public CreateOwnerResponse createOwner(CreateOwnerCommand ownerCommand) {
         Owner owner = ownerCommandMapper.toOwner(ownerCommand);
 
         ownerServicePort.createOwner(owner);
 
-        return OwnerResponse.builder()
+        return CreateOwnerResponse.builder()
                 .success(true)
                 .message("Owner created")
                 .build();

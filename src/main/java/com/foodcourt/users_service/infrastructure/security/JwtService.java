@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -24,26 +25,47 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get("id", Integer.class).longValue();
+    }
+
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
         return resolver.apply(extractAllClaims(token));
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()               // ✔ funciona con 0.11.5
+                .setSigningKey(getKey())          // ✔ correcto
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    public String generateToken(
+
+    public String generateToken(UserDetails userDetails, Long userId, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", userId);
+        claims.put("role", role);
+        return generateToken(claims, userDetails);
+    }
+
+    private String generateToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
         return Jwts.builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(userDetails.getUsername())      // email
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .signWith(getKey(), SignatureAlgorithm.HS256)   // ✔ en 0.11.5
                 .compact();
     }
+
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         return extractUsername(token).equals(userDetails.getUsername())
@@ -54,15 +76,11 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
+
 
     private Key getKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+        return Keys.hmacShaKeyFor(
+                Decoders.BASE64.decode(SECRET_KEY)
+        );
     }
 }
