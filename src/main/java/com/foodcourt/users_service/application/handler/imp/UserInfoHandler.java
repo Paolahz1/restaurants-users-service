@@ -1,23 +1,17 @@
-package com.foodcourt.users_service.application.handler;
+package com.foodcourt.users_service.application.handler.imp;
 
 import com.foodcourt.users_service.application.dto.get.GetRoleResponse;
 import com.foodcourt.users_service.application.dto.get.GetUserByEmailResponse;
 import com.foodcourt.users_service.application.dto.get.GetUserByIdResponse;
-import com.foodcourt.users_service.application.dto.login.AuthResponse;
-import com.foodcourt.users_service.application.dto.login.LoginCommand;
-import com.foodcourt.users_service.application.mapper.GetRoleResponseMapper;
-import com.foodcourt.users_service.application.mapper.GetUserByEmailResponseMapper;
-import com.foodcourt.users_service.application.mapper.GetUserByIdlResponseMapper;
+import com.foodcourt.users_service.application.handler.port.IUserInfoHandler;
+import com.foodcourt.users_service.application.mapper.GetRoleMapper;
+import com.foodcourt.users_service.application.mapper.GetUserByEmailMapper;
+import com.foodcourt.users_service.application.mapper.GetUserByIdlMapper;
 import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.model.User;
 import com.foodcourt.users_service.domain.port.api.IUserGetInfoServicePort;
-import com.foodcourt.users_service.infrastructure.security.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 
@@ -28,9 +22,9 @@ import org.springframework.stereotype.Service;
 public class UserInfoHandler implements IUserInfoHandler {
 
     private final IUserGetInfoServicePort userGetInfoServicePort;
-    private final GetRoleResponseMapper getRolResponseMapper;
-    private final GetUserByEmailResponseMapper getUserByEmailResponseMapper;
-    private final GetUserByIdlResponseMapper getUserResponseMapper;
+    private final GetRoleMapper getRolResponseMapper;
+    private final GetUserByEmailMapper getUserByEmailResponseMapper;
+    private final GetUserByIdlMapper getUserResponseMapper;
 
     @Override
     public GetRoleResponse getRoleById(Long userId) {

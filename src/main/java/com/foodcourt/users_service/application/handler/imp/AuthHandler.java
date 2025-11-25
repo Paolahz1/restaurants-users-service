@@ -1,7 +1,8 @@
-package com.foodcourt.users_service.application.handler;
+package com.foodcourt.users_service.application.handler.imp;
 
 import com.foodcourt.users_service.application.dto.login.AuthResponse;
 import com.foodcourt.users_service.application.dto.login.LoginCommand;
+import com.foodcourt.users_service.application.handler.port.IAuthHandler;
 import com.foodcourt.users_service.domain.model.User;
 import com.foodcourt.users_service.domain.port.api.IUserGetInfoServicePort;
 import com.foodcourt.users_service.infrastructure.security.JwtService;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Transactional
 
-public class AuthHandler implements IAuthHandler{
+public class AuthHandler implements IAuthHandler {
 
     private final IUserGetInfoServicePort userGetInfoServicePort;
     private final AuthenticationManager authManager;

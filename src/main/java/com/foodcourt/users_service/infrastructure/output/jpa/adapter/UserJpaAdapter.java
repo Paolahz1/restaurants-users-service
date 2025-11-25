@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 public class UserJpaAdapter implements IUserPersistencePort {
 
     private final IUserJpaRepository userRepository;
-    private final IOwnerEntityMapper mapper;
     private final IUserEntityMapper userMapper;
 
 
@@ -39,10 +38,9 @@ public class UserJpaAdapter implements IUserPersistencePort {
     }
 
     @Override
-    public void saveUser(User user) {
+    public User saveUser(User user) {
         UserEntity userEntity = userMapper.toEntity(user);
-        userRepository.save(userEntity);
+        return userMapper.toDomain( userRepository.save(userEntity));
     }
-
 
 }

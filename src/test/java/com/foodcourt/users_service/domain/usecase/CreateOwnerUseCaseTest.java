@@ -52,7 +52,6 @@
 
             useCase.createOwner(testOwner);
 
-            // verificamos que se guardó el owner
             verify(persistencePort).saveOwner(argThat(owner ->
                     owner.getEmail().equals("ana@mail.com") &&
                             owner.getPassword().equals("encryptedPassword") &&

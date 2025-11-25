@@ -1,4 +1,4 @@
-package com.foodcourt.users_service.application.handler;
+package com.foodcourt.users_service.application.handler.port;
 
 import com.foodcourt.users_service.application.dto.login.AuthResponse;
 import com.foodcourt.users_service.application.dto.login.LoginCommand;

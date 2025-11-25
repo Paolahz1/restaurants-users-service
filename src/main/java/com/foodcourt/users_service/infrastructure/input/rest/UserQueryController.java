@@ -3,8 +3,7 @@ package com.foodcourt.users_service.infrastructure.input.rest;
 import com.foodcourt.users_service.application.dto.get.GetRoleResponse;
 import com.foodcourt.users_service.application.dto.get.GetUserByEmailResponse;
 import com.foodcourt.users_service.application.dto.get.GetUserByIdResponse;
-import com.foodcourt.users_service.application.handler.IUserInfoHandler;
-import com.foodcourt.users_service.application.handler.IOwnerHandler;
+import com.foodcourt.users_service.application.handler.port.IUserInfoHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserQueryController {
 
     private final IUserInfoHandler userInfoHandler;
-    private  final IOwnerHandler ownerHandler;
+
 
     @Operation(
             summary = "Obtener rol del usuario",

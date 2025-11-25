@@ -2,10 +2,11 @@ package com.foodcourt.users_service.domain.usecase;
 import com.foodcourt.users_service.domain.exception.*;
 import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.model.User;
-import com.foodcourt.users_service.domain.port.api.IEmployeeServicePort;
+import com.foodcourt.users_service.domain.port.api.ICreateEmployeeServicePort;
 import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
 
-public class CreateEmployeeUseCase implements IEmployeeServicePort {
+
+public class CreateEmployeeUseCase implements ICreateEmployeeServicePort {
 
     private final IUserPersistencePort authPersistencePort;
 
@@ -14,9 +15,10 @@ public class CreateEmployeeUseCase implements IEmployeeServicePort {
     }
 
     @Override
-    public void createEmployee(User employee) {
+    public User create(User employee) {
 
         User user = authPersistencePort.getUserByeEmail(employee.getEmail());
+
         if(user != null){
             throw new EmailAlreadyExistsException();
         }
@@ -34,6 +36,7 @@ public class CreateEmployeeUseCase implements IEmployeeServicePort {
         }
 
         employee.setRole(Role.EMPLOYEE);
-        authPersistencePort.saveUser(employee);
+        return authPersistencePort.saveUser(employee);
+
     }
 }

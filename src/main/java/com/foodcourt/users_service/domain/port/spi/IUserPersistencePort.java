@@ -11,5 +11,5 @@ public interface IUserPersistencePort {
 
     User getUserByeEmail(String email);
 
-    void saveUser(User user);
+    User saveUser(User user);
 }
