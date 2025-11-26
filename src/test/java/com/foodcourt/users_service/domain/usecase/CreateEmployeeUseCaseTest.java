@@ -33,7 +33,6 @@ class CreateEmployeeUseCaseTest {
     @Mock
     IUserValidationService validationService;
 
-
     @InjectMocks
     CreateEmployeeUseCase useCase;
 

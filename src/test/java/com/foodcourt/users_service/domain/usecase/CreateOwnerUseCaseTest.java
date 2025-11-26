@@ -1,18 +1,15 @@
 package com.foodcourt.users_service.domain.usecase;
 
 import com.foodcourt.users_service.domain.exception.EmailAlreadyExistsException;
-import com.foodcourt.users_service.domain.exception.InvalidEmailFormatException;
-import com.foodcourt.users_service.domain.exception.InvalidPhoneNumberException;
 import com.foodcourt.users_service.domain.exception.UnderageOwnerException;
 import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.model.User;
 import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
 import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
 import com.foodcourt.users_service.domain.port.spi.IUserValidationService;
-import org.hibernate.NonUniqueObjectException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.control.MappingControl;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
