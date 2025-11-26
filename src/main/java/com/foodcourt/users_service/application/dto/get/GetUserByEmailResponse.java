@@ -1,6 +1,7 @@
 package com.foodcourt.users_service.application.dto.get;
 
 import com.foodcourt.users_service.domain.model.Role;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,6 +16,6 @@ public class GetUserByEmailResponse {
     private String identityDocument;
     private String phoneNumber;
     private String email;
-    private LocalDate birthDate;
+     private LocalDate birthDate;
     private Role role;
 }

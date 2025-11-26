@@ -1,5 +1,6 @@
 package com.foodcourt.users_service.application.dto.get;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,6 +8,7 @@ import lombok.Data;
 @Builder
 public class GetUserByIdCommand {
 
-    private Long id;
+    @NotBlank
+   private Long id;
 
 }
