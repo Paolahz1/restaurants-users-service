@@ -1,38 +1,39 @@
 package com.foodcourt.users_service.domain.usecase;
-import com.foodcourt.users_service.domain.exception.*;
+
+import com.foodcourt.users_service.domain.exception.EmailAlreadyExistsException;
 import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.model.User;
-import com.foodcourt.users_service.domain.port.api.ICreateEmployeeServicePort;
+import com.foodcourt.users_service.domain.port.api.ICreateClientServicePort;
 import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
 import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
 import com.foodcourt.users_service.domain.port.spi.IUserValidationService;
 
-public class CreateEmployeeUseCase implements ICreateEmployeeServicePort {
+
+public class CreateClientUseCase implements ICreateClientServicePort {
 
     private final IUserPersistencePort userPersistencePort;
     private  final IPasswordEncoderPort passwordEncoderPort;
     private final IUserValidationService validationService;
 
-    public CreateEmployeeUseCase(IUserPersistencePort userPersistencePort, IPasswordEncoderPort passwordEncoderPort, IUserValidationService validationService) {
+    public CreateClientUseCase(IUserPersistencePort userPersistencePort, IPasswordEncoderPort passwordEncoderPort, IUserValidationService validationService) {
         this.userPersistencePort = userPersistencePort;
         this.passwordEncoderPort = passwordEncoderPort;
         this.validationService = validationService;
     }
 
     @Override
-    public User create(User employee) {
+    public User create(User client) {
 
-        User user = userPersistencePort.getUserByeEmail(employee.getEmail());
+        User user = userPersistencePort.getUserByeEmail(client.getEmail());
+
         if(user != null){
             throw new EmailAlreadyExistsException();
         }
+        //format email, phone, identification
+        validationService.validate(client);
 
-        //format of email, phone, identification
-        validationService.validate(employee);
-
-        employee.setRole(Role.EMPLOYEE);
-        employee.setPassword(passwordEncoderPort.encode(employee.getPassword()));
-        return userPersistencePort.saveUser(employee);
-
+        client.setRole(Role.CLIENT);
+        client.setPassword(passwordEncoderPort.encode(client.getPassword()));
+        return userPersistencePort.saveUser(client);
     }
 }

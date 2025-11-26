@@ -4,12 +4,15 @@ import com.foodcourt.users_service.domain.exception.EmailAlreadyExistsException;
 import com.foodcourt.users_service.domain.exception.InvalidEmailFormatException;
 import com.foodcourt.users_service.domain.exception.InvalidPhoneNumberException;
 import com.foodcourt.users_service.domain.exception.UnderageOwnerException;
-import com.foodcourt.users_service.domain.model.Owner;
 import com.foodcourt.users_service.domain.model.Role;
-import com.foodcourt.users_service.domain.port.spi.IOwnerPersistencePort;
+import com.foodcourt.users_service.domain.model.User;
 import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
+import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
+import com.foodcourt.users_service.domain.port.spi.IUserValidationService;
+import org.hibernate.NonUniqueObjectException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.control.MappingControl;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,15 +28,20 @@ import static org.mockito.Mockito.when;
 class CreateOwnerUseCaseTest {
 
     @Mock
-    IOwnerPersistencePort persistencePort;
+    IUserPersistencePort persistencePort;
+
     @Mock
     IPasswordEncoderPort encoderPort;
+
+    @Mock
+    IUserValidationService validationService;
+
     @InjectMocks
     CreateOwnerUseCase useCase;
 
     @Test
-    void shouldCreateOwnerSuccessfully(){
-        Owner testOwner = Owner.builder()
+    void shouldCreateOwnerSuccessfully() {
+        User testOwner = User.builder()
                 .firstName("Ana")
                 .lastName("Gómez")
                 .identityDocument("123456789")
@@ -41,35 +49,35 @@ class CreateOwnerUseCaseTest {
                 .email("ana@mail.com")
                 .password("1234")
                 .birthDate(LocalDate.of(1990, 5, 10))
-                .role(Role.OWNER)
                 .build();
 
-        when(persistencePort.existsByEmail(testOwner.getEmail())).thenReturn(false);
+        when(persistencePort.getUserByeEmail(testOwner.getEmail())).thenReturn(null);
         when(encoderPort.encode(testOwner.getPassword())).thenReturn("encryptedPassword");
 
         useCase.createOwner(testOwner);
 
-        verify(persistencePort).saveOwner(argThat(owner ->
-                owner.getEmail().equals("ana@mail.com") &&
-                        owner.getPassword().equals("encryptedPassword") &&
-                        owner.getRole() == Role.OWNER
+        verify(validationService).validate(testOwner);
+        verify(persistencePort).saveUser(argThat(user ->
+                user.getEmail().equals("ana@mail.com") &&
+                        user.getPassword().equals("encryptedPassword") &&
+                        user.getRole() == Role.OWNER
         ));
     }
+
 
     @Test
     void shouldThrowExceptionWhenEmailExists() {
 
-        Owner testOwner = Owner.builder()
+        User testOwner = User.builder()
                 .firstName("Juan")
                 .lastName("Pérez")
                 .identityDocument("123456789")
                 .phoneNumber("+573005678910")
                 .email("test@gmail.com")
-                .password("1234")
-                .birthDate(LocalDate.of(1990, 5, 10))
+                .password("1234")    .birthDate(LocalDate.of(1990, 5, 10))
                 .build();
 
-        when(persistencePort.existsByEmail(testOwner.getEmail())).thenReturn(true);
+        when(persistencePort.getUserByeEmail(testOwner.getEmail())).thenReturn(User.builder().build());
 
         assertThrows(EmailAlreadyExistsException.class,
                 () -> useCase.createOwner(testOwner));
@@ -77,7 +85,7 @@ class CreateOwnerUseCaseTest {
 
     @Test
     void shouldThrowExceptionWhenOwnerIsUnderage() {
-        Owner testOwner = Owner.builder()
+        User testOwner = User.builder()
                 .firstName("Pedro")
                 .lastName("López")
                 .identityDocument("987654321")
@@ -92,37 +100,19 @@ class CreateOwnerUseCaseTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenPhoneNumberIsInvalid() {
-        Owner invalidPhoneOwner = Owner.builder()
-                .firstName("Carlos")
-                .lastName("Ruiz")
-                .identityDocument("123456789")
-                .phoneNumber("12345678901234")
-                .email("carlos@mail.com")
+    void shouldCallValidationService(){
+        User testOwner = User.builder()
+                .firstName("Pedro")
+                .lastName("López")
+                .identityDocument("987654321")
+                .phoneNumber("+573001112233")
+                .email("pedro@mail.com")
                 .password("1234")
-                .birthDate(LocalDate.of(1990, 5, 10))
+                .password("1234")    .birthDate(LocalDate.of(1990, 5, 10))
                 .build();
 
-        assertThrows(InvalidPhoneNumberException.class,
-                () -> useCase.createOwner(invalidPhoneOwner));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenEmailIsInvalid() {
-        Owner invalidEmailOwner = Owner.builder()
-                .firstName("Laura")
-                .lastName("Martínez")
-                .identityDocument("12345678")
-                .phoneNumber("+573005678910")
-                .email("correo-invalido")
-                .password("1234")
-                .birthDate(LocalDate.of(1990, 5, 10))
-                .build();
-
-        when(persistencePort.existsByEmail(invalidEmailOwner.getEmail())).thenReturn(false);
-
-        assertThrows(InvalidEmailFormatException.class,
-                () -> useCase.createOwner(invalidEmailOwner));
+        useCase.createOwner(testOwner);
+        verify(validationService).validate(testOwner); //Valida que sí se llamó
     }
 
 }

@@ -1,14 +1,12 @@
-package com.foodcourt.users_service.domain.model;
+package com.foodcourt.users_service.application.dto.create;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
+@Builder
+public class CreateClientCommand {
 
-public abstract class Person {
-
-    private Long id;
     private String firstName;
     private String lastName;
     private String identityDocument;

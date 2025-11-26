@@ -19,7 +19,6 @@ public class UserQueryController {
 
     private final IUserInfoHandler userInfoHandler;
 
-
     @Operation(
             summary = "Obtener rol del usuario",
             description = "Devuelve el rol asociado al ID del usuario."

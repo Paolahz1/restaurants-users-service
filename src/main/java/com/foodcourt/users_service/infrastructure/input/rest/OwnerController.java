@@ -51,7 +51,7 @@ public class OwnerController {
             )
     })
     @PostMapping
-    @PreAuthorize("hasRole('OWNER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CreateOwnerResponse> saveOwner(@RequestBody CreateOwnerCommand ownerCommand) {
         CreateOwnerResponse response = ownerHandler.createOwner(ownerCommand);
         if (!response.isSuccess()) {

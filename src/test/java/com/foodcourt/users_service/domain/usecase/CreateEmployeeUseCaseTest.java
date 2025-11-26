@@ -1,17 +1,18 @@
 package com.foodcourt.users_service.domain.usecase;
 
 import com.foodcourt.users_service.domain.exception.*;
-import com.foodcourt.users_service.domain.model.Owner;
 import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.model.User;
+import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
 import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
+import com.foodcourt.users_service.domain.port.spi.IUserValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,12 +24,19 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CreateEmployeeUseCaseTest {
 
-
     @Mock
     IUserPersistencePort persistencePort;
 
+    @Mock
+    IPasswordEncoderPort encoderPort;
+
+    @Mock
+    IUserValidationService validationService;
+
+
     @InjectMocks
     CreateEmployeeUseCase useCase;
+
 
     @Test
     void shouldCreateEmployeeSuccessfully() {
@@ -65,45 +73,5 @@ class CreateEmployeeUseCaseTest {
         assertThrows(EmailAlreadyExistsException.class, () -> useCase.create(employee));
     }
 
-    @Test
-    void shouldThrowExceptionWhenEmailIsInvalid() {
-        User employee = User.builder()
-                .email("invalid-email")
-                .identityDocument("999999")
-                .phoneNumber("+573004445566")
-                .build();
 
-        when(persistencePort.getUserByeEmail(employee.getEmail()))
-                .thenReturn(null);
-
-        assertThrows(InvalidEmailFormatException.class, () -> useCase.create(employee));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenDocumentIsInvalid() {
-        User employee = User.builder()
-                .email("employee@test.com")
-                .identityDocument("ID123ABC")
-                .phoneNumber("+573004445566")
-                .build();
-
-        when(persistencePort.getUserByeEmail(employee.getEmail()))
-                .thenReturn(null);
-
-        assertThrows(InvalidDocumentException.class, () -> useCase.create(employee));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenPhoneNumberIsInvalid() {
-        User employee = User.builder()
-                .email("employee@test.com")
-                .identityDocument("123456")
-                .phoneNumber("ABC123")
-                .build();
-
-        when(persistencePort.getUserByeEmail(employee.getEmail()))
-                .thenReturn(null);
-
-        assertThrows(InvalidPhoneNumberException.class, () -> useCase.create(employee));
-    }
 }

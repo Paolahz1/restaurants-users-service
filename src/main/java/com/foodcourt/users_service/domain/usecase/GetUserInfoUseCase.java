@@ -14,8 +14,7 @@ public class GetUserInfoUseCase implements IUserGetInfoServicePort {
     }
 
     public Role getUserRoleById(Long userId) {
-        Role role = userPersistencePort.getRoleById(userId);
-        return  role;
+        return  userPersistencePort.getRoleById(userId);
     }
 
     public User getUserById(Long userId) {
