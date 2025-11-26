@@ -7,6 +7,7 @@ import com.foodcourt.users_service.application.handler.port.IUserInfoHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class UserQueryController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @GetMapping("role/{id}")
-    public ResponseEntity<GetRoleResponse> getRoleById(@PathVariable Long id){
+    public ResponseEntity<GetRoleResponse> getRoleById(@Valid @PathVariable Long id){
         GetRoleResponse response = userInfoHandler.getRoleById(id);
 
         if (response == null || response.getRole() == null) {

@@ -4,6 +4,7 @@ import com.foodcourt.users_service.application.dto.create.CreateClientCommand;
 import com.foodcourt.users_service.application.dto.create.CreateClientResponse;
 import com.foodcourt.users_service.application.handler.port.IClientHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ClientController {
     private final IClientHandler clientHandler;
 
     @PostMapping
-    public ResponseEntity<CreateClientResponse> saveClient(@RequestBody CreateClientCommand command) {
+    public ResponseEntity<CreateClientResponse> saveClient(@Valid @RequestBody CreateClientCommand command) {
         CreateClientResponse response = clientHandler.create(command);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

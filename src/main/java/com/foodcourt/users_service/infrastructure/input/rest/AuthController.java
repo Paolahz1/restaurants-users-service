@@ -4,6 +4,7 @@ import com.foodcourt.users_service.application.dto.login.AuthResponse;
 import com.foodcourt.users_service.application.dto.login.LoginCommand;
 import com.foodcourt.users_service.application.handler.port.IAuthHandler;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class AuthController {
     )
 
     @PostMapping("login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginCommand request){
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginCommand request){
         return ResponseEntity.ok(authHandler.login(request));
     }
 

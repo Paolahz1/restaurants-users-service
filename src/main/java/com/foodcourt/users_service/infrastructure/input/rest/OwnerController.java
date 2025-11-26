@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class OwnerController {
     })
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CreateOwnerResponse> saveOwner(@RequestBody CreateOwnerCommand ownerCommand) {
+    public ResponseEntity<CreateOwnerResponse> saveOwner(@Valid @RequestBody CreateOwnerCommand ownerCommand) {
         CreateOwnerResponse response = ownerHandler.createOwner(ownerCommand);
         if (!response.isSuccess()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
