@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface CreateOwnerCommandMapper {
+public interface CreateOwnerMapper {
 
     @Mapping(target = "role", ignore = true)
     Owner toOwner(CreateOwnerCommand ownerCommand);

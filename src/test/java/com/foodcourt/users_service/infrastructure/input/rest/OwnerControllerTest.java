@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.foodcourt.users_service.application.dto.create.CreateOwnerCommand;
 import com.foodcourt.users_service.application.dto.create.CreateOwnerResponse;
-import com.foodcourt.users_service.application.handler.IOwnerHandler;
+import com.foodcourt.users_service.application.handler.port.IOwnerHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -57,7 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         when(ownerHandler.createOwner(any())).thenReturn(response);
 
-        mockMvc.perform(post("/owners/")
+        mockMvc.perform(post("/owner/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(command)))
                 .andExpect(status().isCreated());

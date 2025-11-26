@@ -1,15 +1,12 @@
-package com.foodcourt.users_service.application.handler;
+package com.foodcourt.users_service.application.handler.port;
 
 import com.foodcourt.users_service.application.dto.get.GetRoleResponse;
 import com.foodcourt.users_service.application.dto.get.GetUserByEmailResponse;
 import com.foodcourt.users_service.application.dto.get.GetUserByIdResponse;
-import com.foodcourt.users_service.application.dto.login.AuthResponse;
-import com.foodcourt.users_service.application.dto.login.LoginCommand;
 
-public interface IAuthHandler {
+public interface IUserInfoHandler {
 
     GetRoleResponse getRoleById(Long userId);
-    AuthResponse login(LoginCommand command);
     GetUserByIdResponse getUserById(Long userId);
     GetUserByEmailResponse getUserByEmail(String email);
 
