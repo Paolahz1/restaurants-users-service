@@ -1,14 +1,13 @@
 package com.foodcourt.users_service.application.mapper;
 
 import com.foodcourt.users_service.application.dto.create.CreateOwnerCommand;
-import com.foodcourt.users_service.domain.model.Owner;
+import com.foodcourt.users_service.domain.model.User;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+
 
 @Mapper(componentModel = "spring")
 public interface CreateOwnerMapper {
 
-    @Mapping(target = "role", ignore = true)
-    Owner toOwner(CreateOwnerCommand ownerCommand);
+    User toDomain(CreateOwnerCommand ownerCommand);
 
 }

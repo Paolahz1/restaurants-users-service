@@ -4,18 +4,15 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 @Builder
-public class CreateOwnerCommand {
+public class CreateClientCommand {
 
     @NotBlank private String firstName;
     @NotBlank private String lastName;
     @NotBlank private String identityDocument;
     @NotBlank private String phoneNumber;
     @NotBlank private String email;
-    @NotBlank private LocalDate birthDate;
     @NotBlank private String password;
 
 }

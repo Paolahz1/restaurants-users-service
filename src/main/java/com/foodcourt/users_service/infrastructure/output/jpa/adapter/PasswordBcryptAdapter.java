@@ -7,8 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class PasswordBcryptAdapter implements IPasswordEncoderPort {
 
-
-    private final PasswordEncoder passwordEncoder;  //librería
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public String encode(String rawPass) {

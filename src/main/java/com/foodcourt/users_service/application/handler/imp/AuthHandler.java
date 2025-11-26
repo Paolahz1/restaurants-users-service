@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Transactional
-
 public class AuthHandler implements IAuthHandler {
 
     private final IUserGetInfoServicePort userGetInfoServicePort;

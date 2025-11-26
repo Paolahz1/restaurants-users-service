@@ -4,6 +4,7 @@ import com.foodcourt.users_service.application.dto.create.CreateEmployeeCommand;
 import com.foodcourt.users_service.application.dto.create.CreateEmployeeResponse;
 import com.foodcourt.users_service.application.handler.port.IEmployeeHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class EmployeeController {
 
     @PostMapping
     @PreAuthorize("hasRole('OWNER')")
-    public ResponseEntity<CreateEmployeeResponse> createEmployee(@RequestBody CreateEmployeeCommand command){
+    public ResponseEntity<CreateEmployeeResponse> createEmployee(@Valid @RequestBody CreateEmployeeCommand command){
         CreateEmployeeResponse response = handler.create(command);
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(response);
