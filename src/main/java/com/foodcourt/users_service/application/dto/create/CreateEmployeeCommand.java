@@ -1,6 +1,7 @@
 package com.foodcourt.users_service.application.dto.create;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class CreateEmployeeCommand {
     @NotBlank private String phoneNumber;
     @NotBlank private String email;
     @NotBlank private String password;
-    @NotBlank private Long restaurantId;
+    @NotNull
+    private Long restaurantId;
 
 }

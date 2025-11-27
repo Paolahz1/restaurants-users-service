@@ -49,8 +49,6 @@ class AuthControllerTest {
                         .content(objectMapper.writeValueAsString(command)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("jwt-token-example"));
-
-
     }
 
 

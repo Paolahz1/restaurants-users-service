@@ -64,14 +64,9 @@ class CreateOwnerUseCaseTest {
 
     @Test
     void shouldThrowExceptionWhenEmailExists() {
-
         User testOwner = User.builder()
-                .firstName("Juan")
-                .lastName("Pérez")
-                .identityDocument("123456789")
-                .phoneNumber("+573005678910")
                 .email("test@gmail.com")
-                .password("1234")    .birthDate(LocalDate.of(1990, 5, 10))
+                .birthDate(LocalDate.of(1990, 5, 10))
                 .build();
 
         when(persistencePort.getUserByeEmail(testOwner.getEmail())).thenReturn(User.builder().build());
@@ -83,14 +78,10 @@ class CreateOwnerUseCaseTest {
     @Test
     void shouldThrowExceptionWhenOwnerIsUnderage() {
         User testOwner = User.builder()
-                .firstName("Pedro")
-                .lastName("López")
-                .identityDocument("987654321")
-                .phoneNumber("+573001112233")
-                .email("pedro@mail.com")
-                .password("1234")
                 .birthDate(LocalDate.now().minusYears(17))
                 .build();
+
+        when(persistencePort.getUserByeEmail(testOwner.getEmail())).thenReturn(null);
 
         assertThrows(UnderageOwnerException.class,
                 () -> useCase.createOwner(testOwner));
@@ -99,14 +90,8 @@ class CreateOwnerUseCaseTest {
     @Test
     void shouldCallValidationService(){
         User testOwner = User.builder()
-                .firstName("Pedro")
-                .lastName("López")
-                .identityDocument("987654321")
-                .phoneNumber("+573001112233")
-                .email("pedro@mail.com")
-                .password("1234")
-                .password("1234")    .birthDate(LocalDate.of(1990, 5, 10))
-                .build();
+                .birthDate(LocalDate.of(1990, 5, 10))
+                        .build();
 
         useCase.createOwner(testOwner);
         verify(validationService).validate(testOwner); //Valida que sí se llamó

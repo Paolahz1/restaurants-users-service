@@ -4,7 +4,6 @@ import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.model.User;
 import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
 import com.foodcourt.users_service.infrastructure.output.jpa.entity.UserEntity;
-import com.foodcourt.users_service.infrastructure.output.jpa.mapper.IOwnerEntityMapper;
 import com.foodcourt.users_service.infrastructure.output.jpa.mapper.IUserEntityMapper;
 import com.foodcourt.users_service.infrastructure.output.jpa.repository.IUserJpaRepository;
 import lombok.RequiredArgsConstructor;
