@@ -17,41 +17,22 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users-service/owner/")
+@RequestMapping("/users-service/owner")
 @RequiredArgsConstructor
 @Tag(name = "Owner", description = "Operations related to owner management")
 public class OwnerController {
 
     private final IOwnerHandler ownerHandler;
 
-    @Operation(
-            summary = "Create an Owner",
-            description = "Allows creating a new Owner (OWNER role) in the system"
-    )
+    @Operation(summary = "Create Owner", description = "Registers a new owner. ADMIN role required.")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Owner successfully created",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CreateOwnerResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Validation error: invalid email, phone, document, or underage owner",
-                    content = @Content(mediaType = "application/json")
-            ),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Email already exists",
-                    content = @Content(mediaType = "application/json")
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Access denied — OWNER role required",
-                    content = @Content
-            )
+            @ApiResponse(responseCode = "201", description = "Owner successfully created",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateOwnerResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Validation error", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Access denied — ADMIN role required", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Email already exists", content = @Content)
     })
-    @PostMapping
+    @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CreateOwnerResponse> saveOwner(@Valid @RequestBody CreateOwnerCommand ownerCommand) {
         CreateOwnerResponse response = ownerHandler.createOwner(ownerCommand);
