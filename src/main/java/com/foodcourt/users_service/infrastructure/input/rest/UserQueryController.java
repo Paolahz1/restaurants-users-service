@@ -26,9 +26,9 @@ public class UserQueryController {
     @Operation(summary = "Get user role by ID", description = "Returns the role of a user by their ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Role retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found")
+            @ApiResponse(responseCode = "404")
     })
-    @GetMapping("role/{id}")
+    @GetMapping("/role/{id}")
     public ResponseEntity<GetRoleResponse> getRoleById(@Valid @PathVariable Long id){
         GetRoleResponse response = userInfoHandler.getRoleById(id);
 
