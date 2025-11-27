@@ -12,8 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -70,6 +68,16 @@ class CreateEmployeeUseCaseTest {
                 .thenReturn(User.builder().build());
 
         assertThrows(EmailAlreadyExistsException.class, () -> useCase.create(employee));
+    }
+
+    @Test
+    void shouldCallValidationService(){
+        User employee = User.builder()
+                .email("employee@exists.com")
+                .build();
+
+        useCase.create(employee);
+        verify(validationService).validate(employee); //Valida que sí se llamó
     }
 
 

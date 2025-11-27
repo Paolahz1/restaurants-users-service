@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,13 +60,10 @@ class CreateClientUseCaseTest {
         ));
     }
 
-
     @Test
     void shouldThrowExceptionWhenEmailExists() {
         User client = User.builder()
-                .email("already@exists.com")
-                .identityDocument("99999")
-                .phoneNumber("+123456789")
+                .email("Ana@exists.com")
                 .build();
 
         when(persistencePort.getUserByeEmail(client.getEmail()))
@@ -72,4 +71,14 @@ class CreateClientUseCaseTest {
 
         assertThrows(EmailAlreadyExistsException.class, () -> useCase.create(client));
     }
+
+
+    @Test
+    void shouldCallValidationService(){
+        User testUser = User.builder().build();
+
+        useCase.create(testUser);
+        verify(validationService).validate(testUser); //Valida que sí se llamó
+    }
+
 }

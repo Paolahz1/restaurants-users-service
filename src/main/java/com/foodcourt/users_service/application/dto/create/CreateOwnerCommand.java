@@ -1,6 +1,7 @@
 package com.foodcourt.users_service.application.dto.create;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,7 +16,8 @@ public class CreateOwnerCommand {
     @NotBlank private String identityDocument;
     @NotBlank private String phoneNumber;
     @NotBlank private String email;
-    @NotBlank private LocalDate birthDate;
+    @NotNull
+    private LocalDate birthDate;
     @NotBlank private String password;
 
 }
