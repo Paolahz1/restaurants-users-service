@@ -1,52 +1,48 @@
 package com.foodcourt.users_service.domain.usecase;
 
 import com.foodcourt.users_service.domain.exception.*;
-import com.foodcourt.users_service.domain.model.Owner;
-import com.foodcourt.users_service.domain.port.api.IOwnerServicePort;
+import com.foodcourt.users_service.domain.model.Role;
+import com.foodcourt.users_service.domain.model.User;
+import com.foodcourt.users_service.domain.port.api.ICreateOwnerServicePort;
 import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
-import com.foodcourt.users_service.domain.port.spi.IOwnerPersistencePort;
+import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
+import com.foodcourt.users_service.domain.port.spi.IUserValidationService;
 
 import java.time.LocalDate;
 
-public class CreateOwnerUseCase implements IOwnerServicePort {
+public class CreateOwnerUseCase implements ICreateOwnerServicePort {
 
-    private  final IOwnerPersistencePort userPersistencePort;
+    private final IUserPersistencePort userPersistencePort;
     private  final IPasswordEncoderPort passwordEncoderPort;
+    private final IUserValidationService validationService;
 
-    public CreateOwnerUseCase(IOwnerPersistencePort userPersistencePort, IPasswordEncoderPort passwordEncoderPort) {
+    public CreateOwnerUseCase(
+            IUserPersistencePort userPersistencePort,
+            IPasswordEncoderPort passwordEncoderPort,
+            IUserValidationService validationService) {
         this.userPersistencePort = userPersistencePort;
         this.passwordEncoderPort = passwordEncoderPort;
+        this.validationService = validationService;
     }
 
     @Override
-    public void createOwner(Owner owner) {
+    public void createOwner(User owner) {
 
-        if(userPersistencePort.existsByEmail(owner.getEmail())){
-            throw new EmailAlreadyExistsException(owner.getEmail());
+        User user = userPersistencePort.getUserByeEmail(owner.getEmail());
+        if(user != null){
+            throw new EmailAlreadyExistsException();
         }
 
         if (owner.getBirthDate().isAfter(LocalDate.now().minusYears(18))) {
             throw new UnderageOwnerException();
         }
 
-        if (!owner.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            throw new InvalidEmailFormatException();
-        }
+        //format of email, phone, identification
+        validationService.validate(owner);
 
-        if (!owner.getIdentityDocument().matches("\\d+")) {
-            throw new InvalidDocumentException();
-        }
-
-        if (!owner.getPhoneNumber().matches("^\\+?\\d{1,13}$")) {
-            throw new InvalidPhoneNumberException();
-        }
-
-        if (owner.getBirthDate().isAfter(LocalDate.now().minusYears(18))) {
-            throw new UnderageOwnerException();
-        }
-
+        owner.setRole(Role.OWNER);
         owner.setPassword(passwordEncoderPort.encode(owner.getPassword()));
-        userPersistencePort.saveOwner(owner);
+        userPersistencePort.saveUser(owner);
 
     }
 }

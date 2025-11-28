@@ -33,8 +33,8 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private LocalDate birthDate; //Solo owner
-    private Long restaurantId; //Solo employee
+    private LocalDate birthDate;
+    private Long restaurantId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -59,10 +59,10 @@ public class JwtService {
     ) {
         return Jwts.builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())      // email
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(getKey(), SignatureAlgorithm.HS256)   // ✔ en 0.11.5
+                .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 

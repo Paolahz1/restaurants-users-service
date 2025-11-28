@@ -1,0 +1,84 @@
+package com.foodcourt.users_service.domain.usecase;
+
+import com.foodcourt.users_service.domain.exception.*;
+import com.foodcourt.users_service.domain.model.Role;
+import com.foodcourt.users_service.domain.model.User;
+import com.foodcourt.users_service.domain.port.spi.IPasswordEncoderPort;
+import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
+import com.foodcourt.users_service.domain.port.spi.IUserValidationService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class CreateEmployeeUseCaseTest {
+
+    @Mock
+    IUserPersistencePort persistencePort;
+
+    @Mock
+    IPasswordEncoderPort encoderPort;
+
+    @Mock
+    IUserValidationService validationService;
+
+    @InjectMocks
+    CreateEmployeeUseCase useCase;
+
+
+    @Test
+    void shouldCreateEmployeeSuccessfully() {
+        User testUser = User.builder()
+                .email("employee@test.com")
+                .identityDocument("123456")
+                .phoneNumber("+573001112233")
+                .build();
+
+        when(persistencePort.getUserByeEmail(testUser.getEmail())).thenReturn(null);
+        when(persistencePort.saveUser(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        User result = useCase.create(testUser);
+
+        assertEquals(Role.EMPLOYEE, result.getRole());
+        verify(persistencePort).saveUser(argThat(user ->
+                user.getEmail().equals("employee@test.com")
+                        && user.getRole().equals(Role.EMPLOYEE)
+        ));
+    }
+
+
+    @Test
+    void shouldThrowExceptionWhenEmailExists() {
+        User employee = User.builder()
+                .email("already@exists.com")
+                .identityDocument("99999")
+                .phoneNumber("+123456789")
+                .build();
+
+        when(persistencePort.getUserByeEmail(employee.getEmail()))
+                .thenReturn(User.builder().build());
+
+        assertThrows(EmailAlreadyExistsException.class, () -> useCase.create(employee));
+    }
+
+    @Test
+    void shouldCallValidationService(){
+        User employee = User.builder()
+                .email("employee@exists.com")
+                .build();
+
+        useCase.create(employee);
+        verify(validationService).validate(employee); //Valida que sí se llamó
+    }
+
+
+}

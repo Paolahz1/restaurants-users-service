@@ -1,65 +1,64 @@
 package com.foodcourt.users_service.infrastructure.input.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.foodcourt.users_service.application.dto.create.CreateOwnerCommand;
 import com.foodcourt.users_service.application.dto.create.CreateOwnerResponse;
-import com.foodcourt.users_service.application.handler.IOwnerHandler;
+import com.foodcourt.users_service.application.handler.port.IOwnerHandler;
+import com.foodcourt.users_service.infrastructure.security.SecurityTestConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 
-import static org.mockito.ArgumentMatchers.any;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = OwnerController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)class OwnerControllerTest {
+@WebMvcTest(OwnerController.class)
+@Import(SecurityTestConfig.class)
+class OwnerControllerTest {
 
     @Autowired
-    private MockMvc mockMvc; // <- MockMvc se inyecta automáticamente
+    MockMvc mockMvc;
 
     @MockitoBean
-    private IOwnerHandler ownerHandler; // <- lo mockeas para que no llame al UseCase real
+    IOwnerHandler handler;
 
-    // Método helper para convertir objetos a JSON, con soporte para LocalDate
-    private static String asJsonString(final Object obj) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule()); // <--- registro del módulo para fechas
-            return mapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+    @Autowired
+    private ObjectMapper objectMapper;
+
+
     @Test
-    void shouldReturn201WhenOwnerCreated() throws Exception {
+    void shouldCreateOwner() throws Exception {
         CreateOwnerCommand command = CreateOwnerCommand.builder()
-                .firstName("Ana")
-                .lastName("Gómez")
-                .identityDocument("123456789")
-                .phoneNumber("+573005678910")
-                .email("ana@mail.com")
-                .password("1234")
-                .birthDate(LocalDate.of(1990, 5, 10))
+                .firstName("John")
+                .lastName("Doe")
+                .identityDocument("12345678")
+                .phoneNumber("5551234")
+                .email("john@example.com")
+                .password("password123")
+                .birthDate(LocalDate.of(1990, 02, 03))
                 .build();
-
-        CreateOwnerResponse response = CreateOwnerResponse.builder()
+        CreateOwnerResponse mockResponse = CreateOwnerResponse.builder()
                 .success(true)
-                .message(null)
+                .message("Ok")
                 .build();
 
-        when(ownerHandler.createOwner(any())).thenReturn(response);
+        when(handler.createOwner(command)).thenReturn(mockResponse);
 
-        mockMvc.perform(post("/owners/")
+        mockMvc.perform(post("/users-service/owner/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(command)))
-                .andExpect(status().isCreated());
+                        .content(objectMapper.writeValueAsString(command))
+                )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Ok"));
     }
 }
