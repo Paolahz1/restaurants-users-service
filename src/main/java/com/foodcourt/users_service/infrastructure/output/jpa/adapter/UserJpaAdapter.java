@@ -3,8 +3,10 @@ package com.foodcourt.users_service.infrastructure.output.jpa.adapter;
 import com.foodcourt.users_service.domain.model.Role;
 import com.foodcourt.users_service.domain.model.User;
 import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
+import com.foodcourt.users_service.infrastructure.output.jpa.entity.EmployeeDetailsEntity;
 import com.foodcourt.users_service.infrastructure.output.jpa.entity.UserEntity;
 import com.foodcourt.users_service.infrastructure.output.jpa.mapper.IUserEntityMapper;
+import com.foodcourt.users_service.infrastructure.output.jpa.repository.IEmployeeDetailsJpaRepository;
 import com.foodcourt.users_service.infrastructure.output.jpa.repository.IUserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,8 +15,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserJpaAdapter implements IUserPersistencePort {
 
-    private final IUserJpaRepository userRepository;
     private final IUserEntityMapper userMapper;
+    private final IUserJpaRepository userRepository;
+    private final IEmployeeDetailsJpaRepository employeeJpaRepository;
 
 
     @Override
@@ -39,7 +42,17 @@ public class UserJpaAdapter implements IUserPersistencePort {
     @Override
     public User saveUser(User user) {
         UserEntity userEntity = userMapper.toEntity(user);
-        return userMapper.toDomain( userRepository.save(userEntity));
+
+        UserEntity savedUser = userRepository.save(userEntity);
+
+        if(user.getRole() == Role.EMPLOYEE){
+            EmployeeDetailsEntity employee = new EmployeeDetailsEntity();
+
+            employee.setUser(savedUser);
+            employee.setRestaurantId(user.getRestaurantId());
+            employeeJpaRepository.save(employee);
+        }
+        return userMapper.toDomain(savedUser);
     }
 
 }

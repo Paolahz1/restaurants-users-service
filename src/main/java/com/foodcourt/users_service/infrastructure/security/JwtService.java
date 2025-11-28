@@ -38,8 +38,8 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()               // ✔ funciona con 0.11.5
-                .setSigningKey(getKey())          // ✔ correcto
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
