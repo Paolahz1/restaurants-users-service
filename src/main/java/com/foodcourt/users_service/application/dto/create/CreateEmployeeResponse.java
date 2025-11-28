@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class CreateEmployeeResponse {
-
     private Long id;
-    private Long restaurantId;
     private String role;
 }

@@ -34,7 +34,6 @@ public class UserEntity implements UserDetails {
     private Role role;
 
     private LocalDate birthDate;
-    private Long restaurantId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

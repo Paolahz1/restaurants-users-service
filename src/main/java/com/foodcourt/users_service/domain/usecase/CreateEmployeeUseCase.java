@@ -24,7 +24,7 @@ public class CreateEmployeeUseCase implements ICreateEmployeeServicePort {
 
         User user = userPersistencePort.getUserByeEmail(employee.getEmail());
         if(user != null){
-            throw new EmailAlreadyExistsException();
+            throw new EmailAlreadyExistsException("correo ...");
         }
 
         //format of email, phone, identification
