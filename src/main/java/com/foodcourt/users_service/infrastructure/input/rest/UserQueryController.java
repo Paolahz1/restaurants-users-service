@@ -1,5 +1,6 @@
 package com.foodcourt.users_service.infrastructure.input.rest;
 
+import com.foodcourt.users_service.application.dto.get.GetEmployeeResponse;
 import com.foodcourt.users_service.application.dto.get.GetRoleResponse;
 import com.foodcourt.users_service.application.dto.get.GetUserByEmailResponse;
 import com.foodcourt.users_service.application.dto.get.GetUserByIdResponse;
@@ -39,7 +40,6 @@ public class UserQueryController {
         return ResponseEntity.
                 status(HttpStatus.OK)
                 .body(response);
-
     }
 
     @Operation(summary = "Get user by ID", description = "Returns the details of a user by their ID.")
@@ -58,7 +58,6 @@ public class UserQueryController {
         return ResponseEntity.
                 status(HttpStatus.OK)
                 .body(response);
-
     }
 
     @Operation(summary = "Get user by email", description = "Returns the details of a user by their email.")
@@ -81,6 +80,19 @@ public class UserQueryController {
                 .body(response);
     }
 
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<GetEmployeeResponse> getEmployeeById(@PathVariable Long id){
+
+        GetEmployeeResponse response = userInfoHandler.getEmployeeById(id);
+
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 
 }
 

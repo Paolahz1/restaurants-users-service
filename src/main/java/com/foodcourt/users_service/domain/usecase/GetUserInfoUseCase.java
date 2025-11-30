@@ -26,5 +26,10 @@ public class GetUserInfoUseCase implements IUserGetInfoServicePort {
         return userPersistencePort.getUserByeEmail(email);
     }
 
+    @Override
+    public User getEmployeeById(long employeeId) {
+        return userPersistencePort.getEmployeeById(employeeId);
+    }
+
 }
 
