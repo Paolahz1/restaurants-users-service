@@ -5,11 +5,14 @@ import com.foodcourt.users_service.domain.model.User;
 import com.foodcourt.users_service.domain.port.spi.IUserPersistencePort;
 import com.foodcourt.users_service.infrastructure.output.jpa.entity.EmployeeDetailsEntity;
 import com.foodcourt.users_service.infrastructure.output.jpa.entity.UserEntity;
+import com.foodcourt.users_service.infrastructure.output.jpa.mapper.IEmployeeEntityMapper;
 import com.foodcourt.users_service.infrastructure.output.jpa.mapper.IUserEntityMapper;
 import com.foodcourt.users_service.infrastructure.output.jpa.repository.IEmployeeDetailsJpaRepository;
 import com.foodcourt.users_service.infrastructure.output.jpa.repository.IUserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     private final IUserEntityMapper userMapper;
     private final IUserJpaRepository userRepository;
     private final IEmployeeDetailsJpaRepository employeeJpaRepository;
-
+    private final IEmployeeEntityMapper employeeMapper;
 
     @Override
     public Role getRoleById(Long idUser) {
@@ -55,4 +58,15 @@ public class UserJpaAdapter implements IUserPersistencePort {
         return userMapper.toDomain(savedUser);
     }
 
+    @Override
+    public User getEmployeeById(Long id){
+        EmployeeDetailsEntity employee = employeeJpaRepository.findById(id)
+                .orElse(null);
+
+        if (employee == null) {
+            return null;
+        }
+
+        return employeeMapper.toDomain(employee);
+    }
 }

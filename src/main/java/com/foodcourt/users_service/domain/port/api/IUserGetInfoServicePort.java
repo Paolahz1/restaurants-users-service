@@ -7,4 +7,5 @@ public interface IUserGetInfoServicePort {
     public Role getUserRoleById(Long userId);
     public User getUserById(Long userId);
     public User getUserByEmail(String email);
+    public User getEmployeeById(long employeeId);
 }

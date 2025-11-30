@@ -21,6 +21,9 @@ public class AuthController {
     @Operation(summary = "User login", description = "Authenticate user and return JWT")
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginCommand request){
+
+                System.out.print(request.getPassword() + " " + request.getEmail());
+        String token = String.valueOf(authHandler.login(request));
         return ResponseEntity.ok(authHandler.login(request));
     }
 
